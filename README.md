@@ -1,7 +1,8 @@
 # Oeis.A002845
 Computes terms of OEIS sequence A002845: https://oeis.org/A002845
 
-Sample output:
+Sample output (computed on Azure Standard E64-16s_v3, 16 vcpus, 432 GB memory, West US 2 region):
+
 ```
 C:\oeis\netcoreapp2.2>dotnet Oeis.A002845.ConsoleApp.dll
 Values                Time Spent     Memory Used
