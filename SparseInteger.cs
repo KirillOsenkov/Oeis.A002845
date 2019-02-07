@@ -384,7 +384,7 @@ namespace Oeis.A002845
         }
 
         /// <summary>
-        /// Returns a base-2 logarithm of this number if is an exact power of 2.
+        /// Returns a base-2 logarithm of this number if it is an exact power of 2.
         /// </summary>
         /// <exception cref="InvalidOperationException">This number is not an exact power of 2.</exception>
         public SparseInteger Log2()
