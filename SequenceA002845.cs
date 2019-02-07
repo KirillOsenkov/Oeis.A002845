@@ -26,18 +26,18 @@ namespace Oeis.A002845
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="n"/> is zero or negative.</exception>
         public int this[int n] =>
             n > 0
-                ? this.GetExpressionsOfSize(n).Count
+                ? this.GetExpressionsOfSize(n).Length
                 : throw new ArgumentOutOfRangeException(nameof(n), n, "Index n must be a positive integer.");
 
         /// <summary>
         /// A map from an expression size (of type <see cref="int"/>) to the set of all expressions of that size
         /// (represented as <see cref="HashSet{T}"/> where <c>T</c> is <see cref="SparseInteger"/>).
         /// </summary>
-        private readonly Dictionary<int, HashSet<SparseInteger>> expressionsOfSize =
-            new Dictionary<int, HashSet<SparseInteger>>
+        private readonly Dictionary<int, SparseInteger[]> expressionsOfSize =
+            new Dictionary<int, SparseInteger[]>
             {
                 // `2` is the only expression of size 1, seed the dictionary with it.
-                {1, new SparseInteger[] {2}.ToHashSet()}
+                {1, new SparseInteger[] {2}}
             };
 
         /// <summary>Returns the set of all expressions of a given <paramref name="size"/>.</summary>
@@ -46,18 +46,18 @@ namespace Oeis.A002845
         /// otherwise computes the set by constructing expressions using smaller expressions for bases and exponents
         /// and removing duplicates, and then returns the result after storing it in <see cref="expressionsOfSize"/>.
         /// </remarks>
-        private HashSet<SparseInteger> GetExpressionsOfSize(int size)
+        private SparseInteger[] GetExpressionsOfSize(int size)
         {
             Debug.Assert(size > 0);
 
-            if (!this.expressionsOfSize.TryGetValue(size, out HashSet<SparseInteger> result))
+            if (!this.expressionsOfSize.TryGetValue(size, out var result))
             {
                 //var list =
                 //    from i in Enumerable.Range(1, size - 1)
                 //    from @base in this.GetExpressionsOfSize(i)
                 //    from exponent in this.GetExpressionsOfSize(size - i)
                 //    select @base.Power(exponent);
-                result = new HashSet<SparseInteger>();
+                var hashset = new HashSet<SparseInteger>();
 
                 for (int i = 1; i < size; i++)
                 {
@@ -67,11 +67,12 @@ namespace Oeis.A002845
                     {
                         foreach (var secondElement in second)
                         {
-                            result.Add(firstElement.Power(secondElement));
+                            hashset.Add(firstElement.Power(secondElement));
                         }
                     }
                 }
 
+                result = hashset.ToArray();
                 this.expressionsOfSize.Add(size, result);
             }
 
