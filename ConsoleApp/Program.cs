@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace Oeis.A002845.ConsoleApp
 {
@@ -22,13 +23,14 @@ namespace Oeis.A002845.ConsoleApp
             var timer = Stopwatch.StartNew();
             var sequence = new SequenceA002845();
 
-            for (int i = 1; i <= 22; i++)
+            for (int i = 1; i <= int.MaxValue; i++)
             {
-                Console.WriteLine(
-                    $"a({i}) = ".PadRight(8) +
+                string message = $"a({i}) = ".PadRight(8) +
                     $"{sequence[i]}".PadRight(14) +
                     $"{timer.Elapsed:h\\:mm\\:ss\\.ff}".PadRight(14) +
-                    $"{GC.GetTotalMemory(true) * 1E-6M:F2} MB".PadLeft(12));
+                    $"{GC.GetTotalMemory(true) * 1E-6M:F2} MB".PadLeft(12);
+                Console.WriteLine(message);
+                File.AppendAllText("log.txt", message + "\r\n");
             }
         }
     }
