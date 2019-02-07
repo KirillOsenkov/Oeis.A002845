@@ -52,11 +52,25 @@ namespace Oeis.A002845
 
             if (!this.expressionsOfSize.TryGetValue(size, out HashSet<SparseInteger> result))
             {
-                result = new HashSet<SparseInteger>(
-                    from i in Enumerable.Range(1, size - 1)
-                    from @base in this.GetExpressionsOfSize(i)
-                    from exponent in this.GetExpressionsOfSize(size - i)
-                    select @base.Power(exponent));
+                //var list =
+                //    from i in Enumerable.Range(1, size - 1)
+                //    from @base in this.GetExpressionsOfSize(i)
+                //    from exponent in this.GetExpressionsOfSize(size - i)
+                //    select @base.Power(exponent);
+                result = new HashSet<SparseInteger>();
+
+                for (int i = 1; i < size; i++)
+                {
+                    var first = GetExpressionsOfSize(i);
+                    var second = GetExpressionsOfSize(size - i);
+                    foreach (var firstElement in first)
+                    {
+                        foreach (var secondElement in second)
+                        {
+                            result.Add(firstElement.Power(secondElement));
+                        }
+                    }
+                }
 
                 this.expressionsOfSize.Add(size, result);
             }

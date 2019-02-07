@@ -22,7 +22,7 @@ namespace Oeis.A002845.ConsoleApp
             var timer = Stopwatch.StartNew();
             var sequence = new SequenceA002845();
 
-            for (int i = 1; i < int.MaxValue; i++)
+            for (int i = 1; i <= 22; i++)
             {
                 Console.WriteLine(
                     $"a({i}) = ".PadRight(8) +
